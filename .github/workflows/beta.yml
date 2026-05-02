@@ -1,4 +1,4 @@
-name: Beta Build
+name: Build IPA
 
 on:
 
@@ -12,13 +12,11 @@ jobs:
 
   build:
 
-    name: Build IPA
-
     runs-on: macos-latest
 
     steps:
 
-      - name: Checkout Code
+      - name: Checkout
 
         uses: actions/checkout@v4
 
@@ -26,13 +24,15 @@ jobs:
 
           fetch-depth: 0
 
-          submodules: recursive
+      - name: Select Xcode
 
-      - name: Build
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build IPA
 
         run: |
 
-          make clean package FINALPACKAGE=1
+          make
 
       - name: Upload IPA
 
@@ -40,6 +40,6 @@ jobs:
 
         with:
 
-          name: Ksign-ipa
+          name: Ksign-IPA
 
           path: packages/*.ipa
